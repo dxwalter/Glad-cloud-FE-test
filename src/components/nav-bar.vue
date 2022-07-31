@@ -42,8 +42,10 @@
       :class="{ 'display-menu': isHamburgerClicked === true }"
     >
       <div class="flex">
-        <div class="mr-8 self-center">Hello Mr. {{ userName }}</div>
-        <div><button class="logout-btn">Logout</button></div>
+        <div class="mr-8 self-center">Hello {{ userTitle }} {{ userName }}</div>
+        <div>
+          <button class="logout-btn" @click="logoutUser">Logout</button>
+        </div>
       </div>
     </div>
   </div>
@@ -51,28 +53,42 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { useRoute } from "vue-router";
-
+import { countryStore } from "@/stores/countries-store";
+import { useToast } from "vue-toastification";
+import { userStore } from "@/stores/user-store";
+import { storeToRefs } from "pinia";
 export default defineComponent({
   name: "NavBar",
   props: {},
-  setup(props) {
-    const userName = ref<string>("");
+  setup() {
     const route = useRoute();
+    const userStoreData = userStore();
+    const countryStoreData = countryStore();
+    const { userData } = storeToRefs(userStoreData);
+    const toast = useToast();
     const pageName = computed(() => route.name);
     const isHamburgerClicked = ref<boolean>(false);
-    userName.value = "Daniel Walter";
+    const userName = ref<string>(userData.value.name);
+    const userTitle = ref<string>(userData.value.title);
 
     function displayMobileMenu() {
       return (isHamburgerClicked.value = !isHamburgerClicked.value);
     }
 
-    // onMounted(async () => {});
+    const logoutUser = () => {
+      userStoreData.resetUser();
+      countryStoreData.resetCountryData();
+      toast.success("Logout successful");
+      route.push({ name: "login" });
+    };
 
     return {
       userName,
+      userTitle,
       pageName,
       isHamburgerClicked,
       displayMobileMenu,
+      logoutUser,
     };
   },
 });
