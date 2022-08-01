@@ -66,7 +66,7 @@ export default defineComponent({
     const countryStoreData = countryStore();
     const { userData } = storeToRefs(userStoreData);
     const toast = useToast();
-    const pageName = computed(() => router.name);
+    const pageName = computed(() => router.currentRoute.value.name);
     const isHamburgerClicked = ref<boolean>(false);
     const userName = ref<string>(userData.value.name);
     const userTitle = ref<string>(userData.value.title);

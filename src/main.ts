@@ -18,12 +18,14 @@ const options = {
 
 import BtnLoader from "./plugins/loader.pluggin";
 import BtnLoaderActivator from "./plugins/buttonLoaderActivator.pluggin";
+import IconPlugin from "./plugins/icons.plugin";
 
 const app = createApp(App);
 
 app.use(Toast, options);
 app.use(BtnLoader);
 app.use(BtnLoaderActivator);
+app.use(IconPlugin);
 app.use(createPinia());
 app.use(router);
 

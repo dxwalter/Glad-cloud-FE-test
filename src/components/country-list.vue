@@ -12,6 +12,7 @@
         <ComboboxButton
           class="absolute inset-y-0 right-0 flex items-center pr-2"
         >
+          <selector-icon></selector-icon>
         </ComboboxButton>
       </div>
       <TransitionRoot
@@ -55,6 +56,7 @@
                 class="absolute inset-y-0 left-0 flex items-center pl-3"
                 :class="{ 'text-white': active, 'text-teal-600': !active }"
               >
+                <check-icon />
               </span>
             </li>
           </ComboboxOption>
@@ -63,12 +65,10 @@
     </div>
   </Combobox>
 </template>
-
-<script setup>
-import { ref, computed, watch } from "vue";
+<script lang="ts">
+import { defineComponent, ref, computed, watch } from "vue";
 import { countryStore } from "@/stores/countries-store";
 import { storeToRefs } from "pinia";
-
 import {
   Combobox,
   ComboboxInput,
@@ -78,39 +78,60 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 
-const emit = defineEmits(["selectedCountry"]);
+import { CheckIcon, SelectorIcon } from "@heroicons/vue/solid";
 
-const countryStoreData = countryStore();
-const { countryData } = storeToRefs(countryStoreData);
-const listOfCountries = computed(() => [
-  {
-    name: "Select country",
-    id: 0,
+export default defineComponent({
+  components: {
+    Combobox,
+    ComboboxInput,
+    ComboboxButton,
+    ComboboxOptions,
+    ComboboxOption,
+    TransitionRoot,
   },
-  ...countryData.value,
-]);
-const selectedCountry = ref("");
+  name: "CountryDropdownComponent",
+  props: {},
+  setup(_, { emit }) {
+    const countryStoreData = countryStore();
+    const { countryData } = storeToRefs(countryStoreData);
+    const listOfCountries = computed(() => [
+      {
+        name: "Select country",
+        id: 0,
+      },
+      ...countryData.value,
+    ]);
+    const selectedCountry = ref("");
+    const selected = ref(listOfCountries.value[0]);
+    const query = ref("");
 
-const selected = ref(listOfCountries.value[0]);
-const query = ref("");
-
-const filteredCountry = computed(() => {
-  return query.value === ""
-    ? listOfCountries.value
-    : listOfCountries.value.filter((country) =>
-        country.name
-          .toLowerCase()
-          .replace(/\s+/g, "")
-          .includes(query.value.toLowerCase().replace(/\s+/g, ""))
-      );
-});
-
-// watch works directly on a ref
-watch(selected, async (newValue, oldValue) => {
-  if (newValue.id > 0) {
-    emit("selectedCountry", {
-      countryId: newValue.id,
+    const filteredCountry = computed(() => {
+      return query.value === ""
+        ? listOfCountries.value
+        : listOfCountries.value.filter((country) =>
+            country.name
+              .toLowerCase()
+              .replace(/\s+/g, "")
+              .includes(query.value.toLowerCase().replace(/\s+/g, ""))
+          );
     });
-  }
+
+    watch(selected, (newValue) => {
+      if (newValue.id > 0) {
+        // emit data
+        emit("selected-country", {
+          countryId: newValue.id,
+        });
+      }
+    });
+
+    return {
+      listOfCountries,
+      selectedCountry,
+      filteredCountry,
+      selected,
+      query,
+    };
+  },
 });
 </script>

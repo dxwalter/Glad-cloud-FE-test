@@ -1,5 +1,5 @@
 import type { App } from "vue";
-import BtnLoader from "./buttonLoader.ui.vue";
+import BtnLoader from "../components/buttonLoader.ui.vue";
 import PageLoader from "./pageLoade.ui.vue";
 export default {
   install: (app: App) => {
