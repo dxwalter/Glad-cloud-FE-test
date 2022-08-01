@@ -15,7 +15,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "engines": {
-    "npm": ">=7.0.0",
+    "npm": ">=8.0.0",
     "node": ">=16.0.0"
   },
   "dependencies": {
