@@ -1,6 +1,6 @@
 <template>
   <NavBar />
-  <div class>
+  <div>
     <page-loader v-if="pageLoading">
       <template #loader-description>
         Fetching universities in {{ countryProfile.name }}
@@ -18,7 +18,7 @@
       </div>
       <div class="set-flex-layout">
         <div class="university-table-layout">
-          <table>
+          <table v-if="allUniversitiesResultCount > 0">
             <tr>
               <th>University Name</th>
               <th>Website</th>
@@ -30,6 +30,14 @@
               </td>
             </tr>
           </table>
+
+          <!-- No university -->
+          <div
+            v-if="allUniversitiesResultCount === 0"
+            class="no-university-alert"
+          >
+            There is no university in {{ countryProfile.name }}
+          </div>
 
           <div
             class="load-more-content"

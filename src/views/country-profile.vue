@@ -59,7 +59,7 @@ import CountryList from "../components/country-list.vue";
 import { userStore } from "@/stores/user-store";
 import { countryStore } from "@/stores/countries-store";
 import { storeToRefs } from "pinia";
-import { defineComponent, ref, computed, onMounted } from "vue";
+import { defineComponent, ref, computed } from "vue";
 
 export default defineComponent({
   components: {

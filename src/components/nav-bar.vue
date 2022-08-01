@@ -52,7 +52,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { countryStore } from "@/stores/countries-store";
 import { useToast } from "vue-toastification";
 import { userStore } from "@/stores/user-store";
@@ -61,12 +61,12 @@ export default defineComponent({
   name: "NavBar",
   props: {},
   setup() {
-    const route = useRoute();
+    const router = useRouter();
     const userStoreData = userStore();
     const countryStoreData = countryStore();
     const { userData } = storeToRefs(userStoreData);
     const toast = useToast();
-    const pageName = computed(() => route.name);
+    const pageName = computed(() => router.name);
     const isHamburgerClicked = ref<boolean>(false);
     const userName = ref<string>(userData.value.name);
     const userTitle = ref<string>(userData.value.title);
@@ -75,12 +75,12 @@ export default defineComponent({
       return (isHamburgerClicked.value = !isHamburgerClicked.value);
     }
 
-    const logoutUser = () => {
+    function logoutUser() {
       userStoreData.resetUser();
       countryStoreData.resetCountryData();
       toast.success("Logout successful");
-      route.push({ name: "login" });
-    };
+      return window.location.replace("/");
+    }
 
     return {
       userName,

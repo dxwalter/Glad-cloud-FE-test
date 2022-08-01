@@ -380,3 +380,10 @@ button:disabled .btn-text {
   height: 100%;
   object-fit: contain;
 }
+
+.no-university-alert {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 100px;
+  text-align: center;
+}

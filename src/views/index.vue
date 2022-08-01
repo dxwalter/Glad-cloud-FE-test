@@ -1,19 +1,14 @@
 <template>
   <div class="login-container">
     <div class="login-form-area">
-      <form>
+      <form @submit.prevent="LoginUser()">
         <input
           type="text"
           class="login-form-input mb-2"
           placeholder="Enter your name"
           v-model="userName"
         />
-        <button
-          id="LoginUser"
-          type="button"
-          class="login-btn"
-          @click="LoginUser()"
-        >
+        <button id="LoginUser" type="submit" class="login-btn">
           <span class="btn-text">Login</span>
           <btn-loader />
         </button>
